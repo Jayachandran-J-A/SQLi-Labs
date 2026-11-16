@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NoteVault</title>
+<style>
+:root{--bg:#fbfaf6;--ink:#2b2b2b;--mut:#7a776e;--acc:#d9822b;--card:#fff;--line:#e8e4d8}
+*{box-sizing:border-box}body{margin:0;font-family:Georgia,'Times New Roman',serif;background:var(--bg);color:var(--ink)}
+header{background:var(--card);border-bottom:1px solid var(--line);padding:14px 24px;display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+header h1{margin:0;font-size:22px;color:var(--acc)}header a{color:var(--ink);text-decoration:none;font-family:system-ui,sans-serif;font-size:14px;cursor:pointer}
+header a:hover{color:var(--acc)}header .sp{flex:1}#who{font-family:system-ui;font-size:13px;color:var(--mut)}
+main{max-width:1000px;margin:24px auto;padding:0 20px;display:grid;grid-template-columns:1fr 260px;gap:24px}
+@media(max-width:800px){main{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:16px;margin-bottom:14px}
+.card h3{margin:0 0 6px}.card small{color:var(--mut);font-family:system-ui}
+input,textarea,button{font:inherit;font-family:system-ui,sans-serif;font-size:14px}
+input,textarea{width:100%;padding:9px;border:1px solid var(--line);border-radius:6px;margin-bottom:8px;background:#fff}
+button{background:var(--acc);color:#fff;border:0;border-radius:6px;padding:9px 16px;cursor:pointer}
+.chip{display:inline-block;background:#f3ead9;border-radius:12px;padding:3px 10px;margin:2px;font-family:system-ui;font-size:12px;cursor:pointer}
+aside h4{margin:0 0 8px;font-family:system-ui;font-size:13px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em}
+.act{font-family:system-ui;font-size:12px;color:var(--mut);border-bottom:1px dashed var(--line);padding:5px 0;word-break:break-all}
+#toast{position:fixed;bottom:16px;right:16px;background:#7a1f1f;color:#fff;padding:10px 14px;border-radius:6px;max-width:420px;font-family:monospace;font-size:12px;display:none;word-break:break-all}
+.hide{display:none}
+</style></head><body>
+<header><h1>NoteVault</h1>
+<a onclick="show('home')">Notes</a><a onclick="show('mine')">My notes</a><a id="authlink" onclick="show('auth')">Sign in</a>
+<span class="sp"></span><span id="who"></span></header>
+<main>
+<section>
+  <div id="v-home">
+    <div class="card"><input id="q" placeholder="Search public notes..." onkeydown="if(event.key==='Enter')search()"><button onclick="search()">Search</button></div>
+    <div id="notes"></div>
+  </div>
+  <div id="v-note" class="hide"><div id="note"></div><button onclick="show('home')">Back</button></div>
+  <div id="v-mine" class="hide">
+    <div class="card"><h3>New note</h3><input id="nt" placeholder="Title"><textarea id="nb" rows="3" placeholder="Write something..."></textarea>
+      <input id="ntag" placeholder="Tag (e.g. work)"><label style="font-family:system-ui;font-size:13px"><input type="checkbox" id="npub" style="width:auto"> Public</label><br><button onclick="saveNote()">Save</button></div>
+    <div id="mynotes"></div>
+  </div>
+  <div id="v-auth" class="hide">
+    <div class="card"><h3>Sign in</h3><input id="lu" placeholder="Username"><input id="lp" type="password" placeholder="Password"><button onclick="login()">Sign in</button></div>
+    <div class="card"><h3>Create account</h3><input id="ru" placeholder="Username"><input id="rp" type="password" placeholder="Password"><button onclick="reg()">Register</button></div>
+  </div>
+</section>
+<aside>
+  <div class="card"><h4>Browse by tag</h4><div id="tags"></div></div>
+  <div class="card"><h4>Recent activity</h4><div id="activity"></div></div>
+</aside>
+</main>
+<div id="toast"></div>
+<script src="static/app.js"></script>
+</body></html>

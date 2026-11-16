@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Support Center</title>
+<style>
+:root{--bg:#f3f6f9;--ink:#17283b;--mut:#66788c;--acc:#0b7bd1;--card:#fff;--line:#dde5ee}
+*{box-sizing:border-box}body{margin:0;font-family:'Segoe UI',system-ui,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+header{background:#0d2740;color:#fff;padding:14px 24px;display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+header h1{margin:0;font-size:20px}header a{color:#bcd6ee;text-decoration:none;font-size:14px;cursor:pointer}.sp{flex:1}
+main{max-width:1100px;margin:20px auto;padding:0 20px;display:grid;grid-template-columns:1fr 260px;gap:20px}
+@media(max-width:820px){main{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px;margin-bottom:12px}
+.card h3{margin:0 0 4px;font-size:15px}.card small{color:var(--mut)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+select,input,textarea,button{font:inherit;font-size:14px}select,input,textarea{padding:8px;border:1px solid var(--line);border-radius:5px;background:#fff}
+button{background:var(--acc);color:#fff;border:0;border-radius:5px;padding:8px 14px;cursor:pointer}
+.tab{border:1px solid var(--line);background:#fff;border-radius:16px;padding:5px 14px;font-size:13px;cursor:pointer}.tab.on{background:var(--acc);color:#fff;border-color:var(--acc)}
+.b{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;background:#e6eef7;margin-left:6px}
+aside h4{margin:0 0 8px;font-size:12px;color:var(--mut);text-transform:uppercase}
+.mini{font-size:12px;color:var(--mut);border-bottom:1px dashed var(--line);padding:5px 0;word-break:break-all}
+.hide{display:none}#toast{position:fixed;bottom:16px;right:16px;background:#7a1f1f;color:#fff;padding:10px 14px;border-radius:6px;max-width:480px;font-family:monospace;font-size:12px;display:none;word-break:break-all}
+</style></head><body>
+<header><h1>Support Center</h1><a onclick="view('tix')">Tickets</a><a onclick="view('kb')">Help articles</a><a onclick="view('new')">Open a ticket</a><a onclick="view('agent')">Agent login</a><span class="sp"></span></header>
+<main><section>
+ <div id="v-tix">
+  <div class="row" id="tabs"></div>
+  <div class="row"><label>Order by&nbsp;<select id="sort" onchange="load()"><option value="id">Ticket #</option><option value="priority">Priority</option><option value="customer">Customer</option><option value="subject">Subject</option></select></label></div>
+  <div id="list"></div>
+ </div>
+ <div id="v-det" class="hide"><button onclick="view('tix')">&larr; Back</button><div class="card" id="det" style="margin-top:12px"></div><div class="card"><h3>Other tickets from this customer</h3><div id="rel"></div></div></div>
+ <div id="v-kb" class="hide"><div class="row"><input id="q" placeholder="Search help articles" onkeydown="if(event.key==='Enter')kb()"><button onclick="kb()">Search</button></div><div id="kbl"></div></div>
+ <div id="v-new" class="hide"><div class="card"><h3>Open a new ticket</h3><div class="row"><input id="ns" placeholder="Subject" style="flex:1"><input id="nc" placeholder="Company / customer"></div>
+   <textarea id="nd" rows="3" style="width:100%" placeholder="Describe the issue"></textarea><br><br><button onclick="newTicket()">Submit</button><div id="nmsg" style="margin-top:8px"></div></div></div>
+ <div id="v-agent" class="hide"><div class="card"><h3>Agent sign in</h3><div class="row"><input id="lu" placeholder="Username"><input id="lp" type="password" placeholder="Password"><button onclick="login()">Sign in</button></div><div id="msg"></div></div></div>
+</section>
+<aside><div class="card"><h4>Help centre activity</h4><div id="act"></div></div></aside></main>
+<div id="toast"></div><script src="static/app.js"></script></body></html>

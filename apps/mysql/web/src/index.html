@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bazaar</title>
+<style>
+:root{--bg:#f5f7fb;--ink:#1d2433;--mut:#6b7488;--acc:#16a085;--card:#fff;--line:#e3e8f0}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+header{background:#12372f;color:#fff;padding:14px 24px;display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+header h1{margin:0;font-size:22px}header a{color:#cfeee6;text-decoration:none;font-size:14px;cursor:pointer}
+.sp{flex:1}.promo{background:#0e2a24;padding:6px 12px;border-radius:6px;font-size:13px}
+main{max-width:1100px;margin:20px auto;padding:0 20px}
+.bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.chip{background:#fff;border:1px solid var(--line);border-radius:20px;padding:6px 14px;font-size:13px;cursor:pointer}
+.chip.on{background:var(--acc);color:#fff;border-color:var(--acc)}
+select,input,textarea,button{font:inherit;font-size:14px}
+select,input,textarea{padding:8px;border:1px solid var(--line);border-radius:6px;background:#fff}
+button{background:var(--acc);color:#fff;border:0;border-radius:6px;padding:8px 16px;cursor:pointer}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px}
+.card h3{margin:0 0 6px;font-size:16px}.card .p{color:var(--acc);font-weight:700}.card small{color:var(--mut)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin-bottom:16px}
+.hide{display:none}.rev{border-top:1px solid var(--line);padding:8px 0;font-size:14px}
+#toast{position:fixed;bottom:16px;right:16px;background:#7a1f1f;color:#fff;padding:10px 14px;border-radius:6px;max-width:460px;font-family:monospace;font-size:12px;display:none;word-break:break-all}
+#msg{color:var(--acc);font-weight:600;margin-top:6px}
+</style></head><body>
+<header><h1>Bazaar</h1>
+<a onclick="view('shop')">Shop</a><a onclick="view('track')">Track order</a><a onclick="view('acct')">Account</a>
+<span class="sp"></span><span class="promo" id="promo">Promo: ...</span></header>
+<main>
+<div id="v-shop">
+  <div class="bar" id="cats"></div>
+  <div class="bar"><label>Sort by&nbsp;<select id="sort" onchange="load()">
+    <option value="id">Featured</option><option value="price">Price</option><option value="name">Name</option><option value="stock">Availability</option></select></label>
+    <span class="sp"></span><input id="sku" placeholder="Check stock by SKU (e.g. EL-1001)"><button onclick="stock()">Check</button></div>
+  <div id="stockout"></div>
+  <div class="grid" id="grid"></div>
+</div>
+<div id="v-prod" class="hide"><button onclick="view('shop')">&larr; Back</button><div class="panel" id="prod"></div>
+  <div class="panel"><h3>Customer reviews</h3><div id="revs"></div>
+  <input id="ra" placeholder="Your name"><br><br><textarea id="rc" rows="2" cols="40" placeholder="Write a review"></textarea><br><br>
+  <select id="rr"><option>5</option><option>4</option><option>3</option><option>2</option><option>1</option></select> <button onclick="addReview()">Submit review</button></div></div>
+<div id="v-track" class="hide"><div class="panel"><h3>Track your order</h3><input id="ref" placeholder="Order reference (e.g. ORD-10001)"> <button onclick="track()">Track</button><div id="trk"></div></div></div>
+<div id="v-acct" class="hide"><div class="panel"><h3>Sign in</h3><input id="lu" placeholder="Username"><br><br><input id="lp" type="password" placeholder="Password"><br><br><button onclick="login()">Sign in</button><div id="msg"></div></div></div>
+</main><div id="toast"></div>
+<script src="app.js"></script></body></html>

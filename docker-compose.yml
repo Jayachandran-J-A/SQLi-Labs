@@ -1,0 +1,114 @@
+name: blackbox-sqli
+
+services:
+  gateway:
+    image: ${REGISTRY:-}nginx:alpine
+    ports:
+      - "0.0.0.0:9000:80"
+    volumes:
+      - ./gateway/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./gateway/html:/usr/share/nginx/html:ro
+    restart: unless-stopped
+
+  # ---------- NoteVault ----------
+  notes:
+    build:
+      context: ./apps/sqlite
+      args:
+        REGISTRY: ${REGISTRY:-}
+    volumes:
+      - notes_data:/data
+    restart: unless-stopped
+
+  # ---------- Bazaar ----------
+  shop:
+    build:
+      context: ./apps/mysql/web
+      args:
+        REGISTRY: ${REGISTRY:-}
+    environment:
+      DB_HOST: mysql-db
+      DB_USER: bazaar
+      DB_PASS: Bz4ar_app_2025
+    depends_on:
+      - mysql-db
+    restart: unless-stopped
+  mysql-db:
+    image: ${REGISTRY:-}mysql:8.0
+    command: ["--secure-file-priv=", "--default-authentication-plugin=mysql_native_password"]
+    environment:
+      MYSQL_ROOT_PASSWORD: r00t_Bazaar_LabOnly
+    volumes:
+      - ./apps/mysql/db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - mysql_data:/var/lib/mysql
+    restart: unless-stopped
+
+  # ---------- PeopleHub ----------
+  people:
+    build:
+      context: ./apps/pg/web
+      args:
+        REGISTRY: ${REGISTRY:-}
+    environment:
+      DB_HOST: pg-db
+    depends_on:
+      - pg-db
+    restart: unless-stopped
+  pg-db:
+    image: ${REGISTRY:-}postgres:16-alpine
+    environment:
+      POSTGRES_DB: people
+      POSTGRES_PASSWORD: r00t_Pe0ple_LabOnly
+    volumes:
+      - ./apps/pg/db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - pg_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  # ---------- Inkwell ----------
+  blog:
+    build:
+      context: ./apps/maria/web
+      args:
+        REGISTRY: ${REGISTRY:-}
+    environment:
+      DB_HOST: maria-db
+    depends_on:
+      - maria-db
+    restart: unless-stopped
+  maria-db:
+    image: ${REGISTRY:-}mariadb:10.11
+    environment:
+      MARIADB_ROOT_PASSWORD: r00t_Inkwell_LabOnly
+    volumes:
+      - ./apps/maria/db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - maria_data:/var/lib/mysql
+    restart: unless-stopped
+
+  # ---------- Support Center ----------
+  support:
+    build:
+      context: ./apps/mssql/web
+      args:
+        REGISTRY: ${REGISTRY:-}
+    environment:
+      DB_HOST: mssql-db
+      MSSQL_SA_PASSWORD: "Sa_Str0ng!Lab2025"
+    depends_on:
+      - mssql-db
+    restart: unless-stopped
+  mssql-db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "Sa_Str0ng!Lab2025"
+      MSSQL_MEMORY_LIMIT_MB: "1536"
+    volumes:
+      - mssql_data:/var/opt/mssql
+    restart: unless-stopped
+
+volumes:
+  notes_data:
+  mysql_data:
+  pg_data:
+  maria_data:
+  mssql_data:
